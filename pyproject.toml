@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project]
+name = "fastdi"
+version = "0.0.1"
+authors = [
+    { name = "Igor Gritsenko", email = "igoryuha.g@gmail.com" },
+]
