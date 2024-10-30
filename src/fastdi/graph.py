@@ -43,7 +43,7 @@ class Provider:
             key_type = p_signature.return_annotation
             
             if isgeneratorfunction(provider):
-                key_type, *_ = get_args(key_type)
+                key_type, = get_args(key_type)
                 body_template = GEN_TEMPLATE
             elif isfunction(provider):
                 body_template = FN_TEMPLATE
