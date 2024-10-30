@@ -28,9 +28,8 @@ class Resolver:
         self.exits: list[Generator] = []
 
     def get(self, key_type):
-        cached = self.cache.get(key_type)
-        if cached:
-            return cached
+        if key_type in self.cache:
+            return self.cache.get(key_type)
 
         try:
             adjacent_deps = self.graph[key_type]

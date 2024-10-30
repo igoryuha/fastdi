@@ -4,17 +4,19 @@ from typing import Any, get_args, Callable
 
 FN_TEMPLATE = """
 def resolve(get, cache, exits):
-    cache[key_type] = origin({args})
-    return cache[key_type]
+    solved = origin({args})
+    cache[key_type] = solved
+    return solved
 """
 
 
 GEN_TEMPLATE = """
 def resolve(get, cache, exits):
     gen = origin({args})
-    cache[key_type] = gen.send(None)
+    solved = gen.send(None)
+    cache[key_type] = solved
     exits.append(gen)
-    return cache[key_type]
+    return solved
 """
 
 
