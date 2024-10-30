@@ -21,5 +21,11 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "mypy",
+    "ruff",
+]
+
 [project.urls]
 Homepage = "https://github.com/igoryuha/fastdi"

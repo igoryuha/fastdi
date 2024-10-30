@@ -1,8 +1,9 @@
 from __future__ import annotations
 
-from typing import Any, Generator
+from collections.abc import Generator
+from typing import Any
 
-from .graph import Provider, AdjacentDependencies
+from .graph import AdjacentDependencies, Provider
 
 
 class Resolver:
@@ -16,9 +17,9 @@ class Resolver:
     )
 
     def __init__(
-            self, 
+            self,
             graph: dict[Any, AdjacentDependencies],
-            scope: str, 
+            scope: str,
             parent: Resolver | None = None,
     ):
         self.graph = graph
@@ -27,23 +28,23 @@ class Resolver:
         self.cache: dict[Any, Any] = {}
         self.exits: list[Generator] = []
 
-    def get(self, key_type):
+    def get(self, key_type: Any):
         if key_type in self.cache:
             return self.cache.get(key_type)
 
         try:
             adjacent_deps = self.graph[key_type]
-        except KeyError:
-            raise ValueError
+        except KeyError as e:
+            raise ValueError from e
 
         if self.scope != adjacent_deps.key_type_scope:
             try:
-                return self.parent.get(key_type)
-            except AttributeError:
-                raise ValueError
-            
+                return self.parent.get(key_type)    # type: ignore[union-attr]
+            except AttributeError as e:
+                raise ValueError from e
+
         return adjacent_deps.resolve(self.get, self.cache, self.exits)
-    
+
     def close(self):
         self.cache = {}
         for _exit in self.exits:

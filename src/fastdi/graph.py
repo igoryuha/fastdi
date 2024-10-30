@@ -1,6 +1,6 @@
-from inspect import signature, isgeneratorfunction, isfunction
-from typing import Any, get_args, Callable
-
+from collections.abc import Callable
+from inspect import isfunction, isgeneratorfunction, signature
+from typing import Any, get_args
 
 FN_TEMPLATE = """
 def resolve(get, cache, exits):
@@ -8,7 +8,6 @@ def resolve(get, cache, exits):
     cache[key_type] = solved
     return solved
 """
-
 
 GEN_TEMPLATE = """
 def resolve(get, cache, exits):
@@ -41,7 +40,7 @@ class Provider:
                 depends[k] = v.annotation
 
             key_type = p_signature.return_annotation
-            
+
             if isgeneratorfunction(provider):
                 key_type, = get_args(key_type)
                 body_template = GEN_TEMPLATE

@@ -1,0 +1,30 @@
+target-version = "py310"
+line-length = 79
+
+include = ["src/**/*.py"]
+
+[lint]
+select = [
+    "A",
+    "B",
+    "E",
+    "F",
+    "UP",
+    "B",
+    "SIM",
+    "I",
+    "C4",
+    "T20",
+    "COM",
+    "ISC",
+    "W",
+    "PT",
+    "RSE",
+    "SLF",
+    "SLOT",
+    "PTH",
+]
+
+ignore = [
+    "SIM105",
+]
