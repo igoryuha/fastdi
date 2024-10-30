@@ -54,16 +54,16 @@ REQUEST_SCOPE = 'request'
 def session() -> Iterable[Session]:
     print('get session')
     yield Session()
-    # здесь пишем код, ответсвенный за закрытие сессии,
+    # здесь пишем код, ответственный за закрытие сессии,
     # он автоматически будет вызван после выхода из
-    # соответствующего скоуа, в данном примере после
+    # соответствующего скоупа, в данном примере после
     # выхода из REQUEST_SCOPE
     print('close session')
 
 
 @provider.provide(scope=REQUEST_SCOPE)
-def dao() -> DAO:
-    return DAO()
+def dao(session: Session) -> DAO:
+    return DAO(session=session)
 
 
 @provider.provide(scope=REQUEST_SCOPE)
@@ -77,7 +77,6 @@ def application_service(domain_service: DomainService, dao: DAO) -> ApplicationS
         domain_service=domain_service,
         dao=dao,
     )
-
 ```
 
 Остановимся немного на примере кода выше и на машинерии работы скоупов. Скоупы контролируют
