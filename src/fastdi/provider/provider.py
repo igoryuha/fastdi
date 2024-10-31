@@ -1,14 +1,19 @@
 from collections.abc import Callable
-from inspect import isclass, isfunction, signature
+from inspect import isclass, isfunction
 from typing import Any
 
-from .graph import (
+from fastdi.graph import (
     AdjacentDependencies,
     build_adj_deps_from_class,
     build_adj_deps_from_factory,
 )
 
-Graph = dict[str, AdjacentDependencies]
+from .parsers import (
+    parse_class_signature,
+    parse_function_signature,
+)
+
+Graph = dict[Any, AdjacentDependencies]
 
 
 class Provider:
@@ -72,7 +77,7 @@ class Provider:
             scope: str,
             cache: bool,
     ):
-        key_type, depends = parse_factory_signature(provider)
+        key_type, depends = parse_function_signature(provider)
 
         adjacent_dependencies = build_adj_deps_from_factory(
             factory=provider,
@@ -84,29 +89,3 @@ class Provider:
         self.graph[key_type] = adjacent_dependencies
 
         return provider
-
-
-def parse_class_signature(
-        origin: type,
-) -> tuple[Any, dict[str, Any]]:
-    init_signature = signature(origin.__init__)    # type: ignore
-
-    depends = {}
-    for k, v in init_signature.parameters.items():
-        if k == 'self':
-            continue
-        depends[k] = v.annotation
-
-    return origin, depends
-
-
-def parse_factory_signature(
-        factory: Callable[..., Any],
-) -> tuple[Any, dict[str, Any]]:
-    factory_signature = signature(factory)
-
-    depends = {}
-    for k, v in factory_signature.parameters.items():
-        depends[k] = v.annotation
-
-    return factory_signature.return_annotation, depends

@@ -3,7 +3,8 @@ from __future__ import annotations
 from collections.abc import Generator
 from typing import Any
 
-from .provider import AdjacentDependencies, Provider
+from .graph import AdjacentDependencies
+from .provider import Provider
 
 
 class Resolver:
