@@ -5,7 +5,7 @@ from typing import Any, get_args
 FN_TEMPLATE = """
 def resolve(get, cache, exits):
     solved = origin({args})
-    cache[key_type] = solved
+    {cache}
     return solved
 """
 
@@ -13,10 +13,12 @@ GEN_TEMPLATE = """
 def resolve(get, cache, exits):
     gen = origin({args})
     solved = gen.send(None)
-    cache[key_type] = solved
+    {cache}
     exits.append(gen)
     return solved
 """
+
+CACHE = "cache[key_type] = solved"
 
 
 def build_resolving_args(depends):
@@ -31,7 +33,7 @@ class Provider:
     def __init__(self):
         self.graph = {}
 
-    def provide(self, scope: str):
+    def provide(self, scope: str, cache: bool = True):
         def inner(provider):
             p_signature = signature(provider)
 
@@ -47,6 +49,8 @@ class Provider:
             elif isfunction(provider):
                 body_template = FN_TEMPLATE
 
+            _cache = CACHE if cache else ''
+
             globs = {
                 'origin': provider,
                 'key_type': key_type,
@@ -54,6 +58,7 @@ class Provider:
             }
             body = body_template.format_map({
                 'args': build_resolving_args(depends),
+                'cache': _cache,
             })
             compiled = compile(body, '<string>', 'exec')
             exec(compiled, globs)
