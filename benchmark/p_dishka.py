@@ -1,27 +1,34 @@
-from dishka import make_container, Scope, Provider
-
-
 from classes import (
-    C, CC, CCC, CCCC,
-    B, BB, BBB, BBBB,
-    D, DD, DDD, DDDD,
+    BB,
+    BBB,
+    BBBB,
+    CC,
+    CCC,
+    CCCC,
+    DD,
+    DDD,
+    DDDD,
     A,
+    B,
+    C,
+    D,
 )
+from dishka import Provider, Scope, make_container
 
+provider = Provider(scope=Scope.REQUEST)
 
-provider = Provider(scope=Scope.APP)
-provider.provide(CCCC, scope=Scope.REQUEST)
-provider.provide(CCC, scope=Scope.REQUEST)
-provider.provide(CC, scope=Scope.REQUEST)
-provider.provide(C, scope=Scope.REQUEST)
-provider.provide(DDDD, scope=Scope.REQUEST)
-provider.provide(DDD, scope=Scope.REQUEST)
-provider.provide(DD, scope=Scope.REQUEST)
-provider.provide(D, scope=Scope.REQUEST)
-provider.provide(BBBB, scope=Scope.REQUEST)
-provider.provide(BBB, scope=Scope.REQUEST)
-provider.provide(BB, scope=Scope.REQUEST)
-provider.provide(B, scope=Scope.REQUEST)
-provider.provide(A, scope=Scope.REQUEST)
+provider.provide(CCCC)
+provider.provide(CCC)
+provider.provide(CC)
+provider.provide(C)
+provider.provide(DDDD)
+provider.provide(DDD)
+provider.provide(DD)
+provider.provide(D)
+provider.provide(BBBB)
+provider.provide(BBB)
+provider.provide(BB)
+provider.provide(B)
+provider.provide(A)
 
 container = make_container(provider)

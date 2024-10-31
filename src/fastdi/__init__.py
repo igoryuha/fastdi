@@ -1,4 +1,4 @@
-from .graph import Provider
+from .provider import Provider
 from .resolver import make_resolver
 
 __all__ = [

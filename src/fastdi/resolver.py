@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections.abc import Generator
 from typing import Any
 
-from .graph import AdjacentDependencies, Provider
+from .provider import AdjacentDependencies, Provider
 
 
 class Resolver:
@@ -28,7 +28,7 @@ class Resolver:
         self.cache: dict[Any, Any] = {}
         self.exits: list[Generator] = []
 
-    def get(self, key_type: Any):
+    def get(self, key_type: Any) -> Any:
         if key_type in self.cache:
             return self.cache.get(key_type)
 
